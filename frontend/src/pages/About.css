@@ -1,0 +1,63 @@
+/* About Page CSS */
+
+.about-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    padding: 20px;
+  }
+  
+  .about-content {
+    max-width: 800px;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 8px;
+    text-align: left;
+    color: #333;
+  }
+  
+  .about-content h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  
+  .about-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .about-section {
+    margin-top: 30px;
+  }
+  
+  .about-section h2 {
+    font-size: 1.8rem;
+    color: #34495e;
+    margin-bottom: 15px;
+  }
+  
+  .about-section p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .team-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .team-list li {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .team-list li strong {
+    color: #2c3e50;
+  }
+  
