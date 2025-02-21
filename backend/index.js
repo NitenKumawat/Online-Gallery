@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000; // Default to 5000 if no PORT is provided
 const JWT_SECRET = process.env.JWT_SECRET;
 require('./config/db');
 const cors = require('cors');
-app.use(cors());
+app.use(cors("*"));
 const Image = require('./models/images');
 const User = require('./models/User');
 app.use(express.json());
