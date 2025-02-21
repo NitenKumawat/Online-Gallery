@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './ImageList.css';
 
-
 const API_URL = import.meta.env.VITE_BACKEND_URL;
+
 const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
   const [editingImage, setEditingImage] = useState(null);
   const [editFormData, setEditFormData] = useState({});
@@ -17,21 +17,46 @@ const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
   // Handles the save action for editing
   const handleEditSubmit = async () => {
     try {
-      const response = await axios.put(`${API_URL}/api/image/${editingImage.image_id}`, editFormData);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('User not authenticated');
+        return;
+      }
+  
+      const response = await axios.put(
+        `http://localhost:3600/api/image/${editingImage._id}`, // Use _id instead of image_id if you're using MongoDB's default identifier
+        editFormData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+  
+      console.log('Update response:', response.data);  // Log the full response for debugging
+  
       alert(response.data.message);
       setEditingImage(null);
-      onImageEdit(editFormData); // Notify parent to update the image list with the edited data
+      onImageEdit(editFormData);
     } catch (error) {
       console.error('Error updating image:', error);
       alert('Failed to update image');
     }
   };
+  
+  
 
   // Handles the delete button click
   const handleDeleteButton = async (imageId) => {
     if (window.confirm('Are you sure you want to delete this image?')) {
       try {
-        const response = await axios.delete(`${API_URL}/api/image/${imageId}`);
+        const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+        const response = await axios.delete(`${API_URL}/api/image/${imageId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         alert(response.data.message);
         onImageDelete(imageId); // Call parent function to update the UI
       } catch (error) {
@@ -40,6 +65,7 @@ const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
       }
     }
   };
+  
 
   // Handles changes in the edit form
   const handleInputChange = (e) => {

@@ -170,18 +170,21 @@ app.get('/api/image',authenticateToken,async (req, res) => {
   }
 });
 
+
+
 // PUT endpoint to update an image by id
-app.put('/api/image/:id',authenticateToken,  async (req, res) => {
+app.put('/api/image/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  console.log(`Updating image with ID: ${id}`, updatedData); // Debugging line
+
+  if (Object.keys(updatedData).length === 0) {
+    return res.status(400).json({ message: 'No data provided to update' });
+  }
+
   try {
-    const { id } = req.params;
-    const updatedData = req.body;
-
-    // Ensure data exists for update
-    if (Object.keys(updatedData).length === 0) {
-      return res.status(400).json({ message: 'No data provided to update' });
-    }
-
-    const updatedImage = await Image.findOneAndUpdate({ image_id: id }, updatedData, { new: true });
+    const updatedImage = await Image.findOneAndUpdate({ _id: id }, updatedData, { new: true });
 
     if (!updatedImage) {
       return res.status(404).json({ message: 'Image not found' });
@@ -194,11 +197,14 @@ app.put('/api/image/:id',authenticateToken,  async (req, res) => {
   }
 });
 
+
 // DELETE endpoint to delete an image by id
-app.delete('/api/image/:id',authenticateToken, async (req, res) => {
+app.delete('/api/image/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+
+  console.log(`Deleting image with ID: ${id}`); // Debugging line
+
   try {
-    const { id } = req.params;
-    
     const deletedImage = await Image.findOneAndDelete({ image_id: id });
 
     if (!deletedImage) {
