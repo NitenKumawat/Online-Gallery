@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
+const mongoose = require('mongoose');
+
 
 
 require('dotenv').config();
@@ -197,26 +199,24 @@ app.put('/api/image/:id', authenticateToken, async (req, res) => {
   }
 });
 
-
-// DELETE endpoint to delete an image by id
-app.delete('/api/image/:id', authenticateToken, async (req, res) => {
-  const { id } = req.params;
-
-  console.log(`Deleting image with ID: ${id}`); // Debugging line
-
+app.delete('/api/image/:id', async (req, res) => {
+  console.log("Delete request received for image ID:", req.params.id); // Log the ID
+  const imageId = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(imageId)) {
+    return res.status(400).json({ message: 'Invalid image ID' });
+  }
   try {
-    const deletedImage = await Image.findOneAndDelete({ image_id: id });
-
+    const deletedImage = await Image.findByIdAndDelete(imageId);
     if (!deletedImage) {
       return res.status(404).json({ message: 'Image not found' });
     }
-
-    res.status(200).json({ message: 'Image deleted successfully' });
-  } catch (e) {
-    console.error('Error deleting image:', e);
-    res.status(500).json({ message: 'Error deleting image' });
+    res.json({ message: 'Image deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting image', error: error.message });
   }
 });
+
+
 
 app.listen(port, () => {
   console.log(`Server is listening at port ${port}`);
