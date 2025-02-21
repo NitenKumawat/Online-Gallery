@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './ImageList.css';
 
+
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
   const [editingImage, setEditingImage] = useState(null);
   const [editFormData, setEditFormData] = useState({});
@@ -15,7 +17,7 @@ const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
   // Handles the save action for editing
   const handleEditSubmit = async () => {
     try {
-      const response = await axios.put(`http://localhost:3500/api/image/${editingImage.image_id}`, editFormData);
+      const response = await axios.put(`${API_URL}/api/image/${editingImage.image_id}`, editFormData);
       alert(response.data.message);
       setEditingImage(null);
       onImageEdit(editFormData); // Notify parent to update the image list with the edited data
@@ -29,7 +31,7 @@ const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
   const handleDeleteButton = async (imageId) => {
     if (window.confirm('Are you sure you want to delete this image?')) {
       try {
-        const response = await axios.delete(`http://localhost:3500/api/image/${imageId}`);
+        const response = await axios.delete(`${API_URL}/api/image/${imageId}`);
         alert(response.data.message);
         onImageDelete(imageId); // Call parent function to update the UI
       } catch (error) {

@@ -5,6 +5,8 @@ import CategoryFilter from '../components/CategoryFilter';
 import ImageList from '../components/ImageList';
 import Modal from '../components/Modal';
 
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
 const Gallery = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -23,7 +25,7 @@ const Gallery = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:3500/api/image', {
+        const response = await fetch(`${API_URL}/api/image`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`, // Add token to Authorization header

@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
 import "./Navbar.css"; // Include your CSS file here
 
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -17,7 +19,7 @@ const Navbar = () => {
           return;
         }
         // Make the API call to fetch user profile
-        const response = await axios.get("http://localhost:3500/api/user/profile", {
+        const response = await axios.get(`${API_URL}/api/user/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

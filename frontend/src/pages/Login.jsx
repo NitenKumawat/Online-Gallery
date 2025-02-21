@@ -3,6 +3,8 @@ import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Make sure axios is imported for HTTP requests
 
+
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
 
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -20,7 +22,7 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('http://localhost:3500/login', formData);
+      const response = await axios.post(`${API_URL}/login`, formData);
    
       
       localStorage.setItem("token", response.data.token);

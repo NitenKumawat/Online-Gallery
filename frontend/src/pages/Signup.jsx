@@ -3,6 +3,8 @@ import "./Signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"; // Ensure axios is imported
 
+
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -62,7 +64,7 @@ const Signup = () => {
 
     try {
       setLoading(true); // Set loading state
-      const response = await axios.post("http://localhost:3500/signup", formData);
+      const response = await axios.post(`${API_URL}/signup`, formData);
       alert(response.data.message);
       navigate("/account/login");
     } catch (err) {

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './AddPlaces.css';
 
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 const AddPlaces = () => {
     
         const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const AddPlaces = () => {
         const handleSubmit = async (e) => {
           e.preventDefault();
           try {
-            const response = await axios.post('http://localhost:3500/api/image', formData);
+            const response = await axios.post(`${API_URL}/api/image`, formData);
             alert(response.data.message);
             setFormData({
               image_id: '',
