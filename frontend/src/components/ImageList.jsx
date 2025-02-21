@@ -24,7 +24,7 @@ const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
       }
   
       const response = await axios.put(
-        `http://localhost:3600/api/image/${editingImage._id}`, // Use _id instead of image_id if you're using MongoDB's default identifier
+        `${API_URL}/api/image/${editingImage._id}`, // Use _id instead of image_id if you're using MongoDB's default identifier
         editFormData,
         {
           headers: {
