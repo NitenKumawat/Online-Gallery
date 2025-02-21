@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ImageList.css';
 
@@ -7,6 +8,7 @@ const API_URL = import.meta.env.VITE_BACKEND_URL;
 const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
   const [editingImage, setEditingImage] = useState(null);
   const [editFormData, setEditFormData] = useState({});
+  const navigate =  useNavigate();
 
   // Handles the edit button click
   const handleEditButton = (image) => {
@@ -37,6 +39,10 @@ const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
       alert(response.data.message);
       setEditingImage(null);
       onImageEdit(editFormData);
+
+      // Redirect to the gallery page after editing
+      navigate('/gallery', { replace: true });  // Replace the current URL with the new one
+
     } catch (error) {
       console.error('Error updating image:', error);
       alert('Failed to update image');
@@ -56,6 +62,9 @@ const ImageList = ({ images, onImageClick, onImageDelete, onImageEdit }) => {
         });
         alert(response.data.message);
         onImageDelete(_id); // Call parent function to update the UI
+
+        // Redirect to the gallery page after deleting
+        navigate('/gallery', { replace: true });  // Replace the current URL with the new one
       } catch (error) {
         console.error('Error deleting image:', error);
         alert('Failed to delete image');
