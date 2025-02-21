@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000; // Default to 5000 if no PORT is provided
 const JWT_SECRET = process.env.JWT_SECRET;
 require('./config/db');
 const cors = require('cors');
-app.use(cors("*"));
+app.use(cors());
 const Image = require('./models/images');
 const User = require('./models/User');
 app.use(express.json());
@@ -92,20 +92,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// const authenticateToken = (req, res, next) => {
-//   const token = req.header("Authorization")?.split(" ")[1]; // Expect "Bearer <token>"
-//   if (!token) {
-//     return res.status(401).json({ error: "Access denied. No token provided." });
-//   }
 
-//   try {
-//     const decoded = jwt.verify(token, JWT_SECRET);
-//     req.user = decoded; // Attach user info to the request object
-//     next();
-//   } catch (err) {
-//     res.status(401).json({ error: "Invalid or expired token." });
-//   }
-// };
 
 
 
@@ -139,103 +126,18 @@ app.get('/api/user/profile', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-// app.post("/signup", async (req, res) => {
-//   console.log(req.body);
-//   const { name, email, password, confirmPassword } = req.body;
 
-//   try {
-   
-//     if (!name || !email || !password || !confirmPassword) {
-//       return res.status(400).json({ error: "All fields are required" });
-//     }
+app.post('/api/image', authenticateToken, async (req, res) => {
+  console.log('Received data:', req.body); // Log the data coming in
 
+  const { image_id, name, description, location, history, category, url } = req.body;
 
-//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//     if (!emailRegex.test(email)) {
-//       return res.status(400).json({ error: "Invalid email format" });
-//     }
+  // Ensure all required fields are provided
+  if (!image_id || !name || !description || !location || !history || !category || !url) {
+    return res.status(400).json({ message: 'All fields are required.' });
+  }
 
- 
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) {
-//       return res.status(400).json({ error: "Email already registered" });
-//     }
-
-  
-//     if (password.length < 8) {
-//       return res
-//         .status(400)
-//         .json({ error: "Password must be at least 8 characters long" });
-//     }
-
-   
-//     if (password !== confirmPassword) {
-//       return res.status(400).json({ error: "Passwords do not match" });
-//     }
-
-   
-//     const hashedPassword = await bcrypt.hash(password, 10);
-
-   
-//     const user = new User({ name, email, password: hashedPassword });
-//     await user.save();
-
-//     res.status(201).json({ message: "User registered successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
-
-
-// app.post("/login", async (req, res) => {
-//   const { email, password } = req.body;
-
-//   try {
-    
-//     if (!email || !password) {
-//       return res.status(400).json({ error: "All fields are required" });
-//     }
-
- 
-//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//     if (!emailRegex.test(email)) {
-//       return res.status(400).json({ error: "Invalid email format" });
-//     }
-
-    
-//     const existingUser = await User.findOne({ email });
-//     if (!existingUser) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
-
-
-//     const isPasswordValid = await bcrypt.compare(password, existingUser.password);
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ error: "Invalid credentials" });
-//     }
-
-  
-//     res.status(200).json({ message: "Login successful", user: { name: existingUser.name, email: existingUser.email } });
-//   } catch (error) {
-//     console.error("Login error:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
-
-
-
-app.post('/api/image ',authenticateToken, async (req, res) => {
   try {
-    const { image_id, name, description, location, history, category, url } = req.body;
-
-    // Ensure all required fields are provided
-    if (!image_id || !name || !description || !location || !history || !category || !url) {
-      return res.status(400).json({ message: 'All fields are required.' });
-    }
-
     const newImage = new Image({
       image_id,
       name,
@@ -253,6 +155,9 @@ app.post('/api/image ',authenticateToken, async (req, res) => {
     res.status(500).json({ message: 'Error saving image' });
   }
 });
+
+
+
 
 // GET endpoint to retrieve all images
 app.get('/api/image',authenticateToken,async (req, res) => {

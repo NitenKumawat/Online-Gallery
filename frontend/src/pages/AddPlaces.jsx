@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './AddPlaces.css';
 
+
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 const AddPlaces = () => {
     
@@ -25,8 +26,22 @@ const AddPlaces = () => {
       
         const handleSubmit = async (e) => {
           e.preventDefault();
+          console.log('Form Data:', formData); // Log the form data to the console
+        
           try {
-            const response = await axios.post(`${API_URL}/api/image`, formData);
+            const token = localStorage.getItem('token'); // Get the token from localStorage
+            if (!token) {
+              alert('No token found. Please log in.');
+              return;
+            }
+        
+            const response = await axios.post(`${API_URL}/api/image`, formData, {
+              headers: {
+                'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                'Content-Type': 'application/json',
+              },
+            });
+            
             alert(response.data.message);
             setFormData({
               image_id: '',
@@ -42,6 +57,8 @@ const AddPlaces = () => {
             alert('Failed to save image data');
           }
         };
+        
+        
   return (
     <div className="form-container">
     <h1>Add New Images</h1>
