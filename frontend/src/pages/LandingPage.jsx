@@ -21,7 +21,7 @@ const LandingPage = () => {
    <>
 <div className="landing-page">
 
-    <h1>Welcome to Turisto</h1>
+    <h1>Welcome to Online Gallery</h1>
     <p>Discover stunning images and timeless creativity.</p>
     <button className="cta-button1" onClick={()=>handleBtnClick()}>Explore Gallery</button>
  </div>
