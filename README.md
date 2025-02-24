@@ -5,6 +5,11 @@ The **Online Gallery** is a full-stack web application built using the **MERN st
 
 ---
 
+## 🎥 Demo  
+
+[Live Demo](https://online-gallery-eight.vercel.app/) 
+
+
 ## Tech Stack
 
 ### Frontend (React + Vite)
@@ -87,8 +92,18 @@ The **Online Gallery** is a full-stack web application built using the **MERN st
 
 
 
-## Author
-Developed by **[Niten Kumwat]**.
+## 👨‍💻 Author  
+
+Developed by [Niten Kumawat](https://github.com/NitenKumawat)  
 
 If you find this project useful, don't forget to ⭐ the repository!
+
+## 📜 License  
+
+This project is licensed under the **MIT License**.  
+
+## 🔗 Links  
+
+
+🌐 **Live Demo:** (https://online-gallery-eight.vercel.app/)
 
